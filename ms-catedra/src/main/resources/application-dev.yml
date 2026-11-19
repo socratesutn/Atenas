@@ -1,0 +1,28 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/atenas
+    username: catedra_user
+    password: ${CATEDRA_DB_PASSWORD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/realms/atenas/protocol/openid-connect/certs
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: atenas-catedra-admin
+            client-secret: ${KC_CATEDRA_ADMIN_SECRET}
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: http://localhost:8081/realms/atenas/protocol/openid-connect/token
+
+atenas:
+  keycloak:
+    admin:
+      base-url: http://localhost:8081/admin/realms/atenas

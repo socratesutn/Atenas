@@ -1,0 +1,12 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://keycloak:8080/realms/atenas/protocol/openid-connect/certs
+
+atenas:
+  rutas:
+    catedra: http://ms-catedra:8080
+    documentacion: http://ms-documentacion:8080
+    seguimiento: http://ms-seguimiento:8080

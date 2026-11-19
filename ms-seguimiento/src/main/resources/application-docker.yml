@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/atenas
+    username: seguimiento_user
+    password: ${SEGUIMIENTO_DB_PASSWORD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://keycloak:8080/realms/atenas/protocol/openid-connect/certs
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: atenas-seguimiento-job
+            client-secret: ${KC_SEGUIMIENTO_JOB_SECRET}
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: http://keycloak:8080/realms/atenas/protocol/openid-connect/token
+
+atenas:
+  clientes:
+    catedra:
+      url: http://ms-catedra:8080
+    documentacion:
+      url: http://ms-documentacion:8080

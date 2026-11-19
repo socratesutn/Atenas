@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: "jdbc:h2:mem:catedra;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS catedra"
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  sql:
+    init:
+      mode: never
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/realms/atenas/protocol/openid-connect/certs
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: atenas-catedra-admin
+            client-secret: secreto-test
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: http://localhost:8081/realms/atenas/protocol/openid-connect/token
+
+atenas:
+  keycloak:
+    clave-temporal: clave-temporal-test
+    admin:
+      base-url: http://localhost:8081/admin/realms/atenas

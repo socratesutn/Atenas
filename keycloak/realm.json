@@ -1,0 +1,130 @@
+{
+  "realm": "atenas",
+  "displayName": "Atenas",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "accessTokenLifespan": 14400,
+  "accessTokenLifespanForImplicitFlow": 300,
+  "accessCodeLifespan": 60,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 3600,
+  "revokeRefreshToken": true,
+  "refreshTokenMaxReuse": 0,
+  "roles": {
+    "realm": [
+      {
+        "name": "JEFE_CATEDRA",
+        "description": "Jefe de cátedra: administra la estructura académica y los hitos."
+      },
+      {
+        "name": "DOCENTE",
+        "description": "Docente: consulta y opera sobre sus comisiones."
+      },
+      {
+        "name": "ALUMNO",
+        "description": "Alumno: consulta y participa en su equipo."
+      },
+      {
+        "name": "SERVICIO",
+        "description": "Cuenta de servicio para tareas automáticas entre microservicios."
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "atenas-postman",
+      "name": "Postman",
+      "description": "Cliente público para obtener tokens con Authorization Code desde Postman.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "https://oauth.pstmn.io/v1/callback"
+      ],
+      "webOrigins": [
+        "+"
+      ],
+      "fullScopeAllowed": true
+    },
+    {
+      "clientId": "atenas-catedra-admin",
+      "name": "Administrador de usuarios de ms-catedra",
+      "description": "Cliente confidencial de ms-catedra para administrar usuarios y asignar roles.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${KC_CATEDRA_ADMIN_SECRET}",
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "fullScopeAllowed": true
+    },
+    {
+      "clientId": "atenas-seguimiento-job",
+      "name": "Tarea nocturna de ms-seguimiento",
+      "description": "Cliente confidencial para la tarea automática de seguimiento.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${KC_SEGUIMIENTO_JOB_SECRET}",
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "fullScopeAllowed": true
+    }
+  ],
+  "users": [
+    {
+      "username": "jefe",
+      "enabled": true,
+      "email": "jefe@atenas.local",
+      "emailVerified": true,
+      "firstName": "Jefe",
+      "lastName": "de Cátedra",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${JEFE_PASSWORD_INICIAL}",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "JEFE_CATEDRA"
+      ]
+    },
+    {
+      "username": "service-account-atenas-catedra-admin",
+      "serviceAccountClientId": "atenas-catedra-admin",
+      "enabled": true,
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "view-realm",
+          "query-users",
+          "view-users"
+        ]
+      }
+    },
+    {
+      "username": "service-account-atenas-seguimiento-job",
+      "serviceAccountClientId": "atenas-seguimiento-job",
+      "enabled": true,
+      "realmRoles": [
+        "SERVICIO"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: ms-catedra
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        default_schema: catedra
+        jdbc:
+          time_zone: UTC
+  sql:
+    init:
+      mode: always
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/atenas
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  api-docs:
+    path: /api/catedra/v3/api-docs
+  swagger-ui:
+    path: /api/catedra/swagger-ui.html
+  paths-to-match: /api/**
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{correlationId}] %logger{36} - %msg%n"
+
+atenas:
+  zona-horaria: America/Argentina/Cordoba
+  http:
+    timeout-conexion: 2s
+    timeout-lectura: 5s
+  keycloak:
+    clave-temporal: ${CLAVE_TEMPORAL}
+    admin:
+      base-url: http://localhost:8081/admin/realms/atenas

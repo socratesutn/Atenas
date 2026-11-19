@@ -1,0 +1,18 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/atenas
+    username: documentacion_user
+    password: ${DOCUMENTACION_DB_PASSWORD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/realms/atenas/protocol/openid-connect/certs
+
+atenas:
+  clientes:
+    catedra:
+      url: http://localhost:8082

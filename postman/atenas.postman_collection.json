@@ -1,0 +1,5543 @@
+{
+  "info": {
+    "_postman_id": "9c20ca33-d2d8-4a13-8c5d-8284719d25b2",
+    "name": "Atenas",
+    "description": "Colección base del backend Atenas. Incluye la carpeta 00 Smoke para verificar la infraestructura y las carpetas 01 a 08, que se completan a medida que se implementan las historias.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 Tokens",
+      "description": "Obtiene tokens OAuth 2.0 Authorization Code con el cliente atenas-postman. Después de Get New Access Token, copiar el Access Token y pegarlo en la variable indicada del environment Atenas Local. Los usuarios nuevos usan CLAVE_TEMPORAL y Keycloak pide cambiarla en el primer login.",
+      "item": [
+        {
+          "name": "Token jefe",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gatewayUrl}}/actuator/health",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "Get New Access Token con el usuario jefe (JEFE_PASSWORD_INICIAL del .env). Copiar el Access Token y pegarlo en token-jefe del environment Atenas Local.",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/auth",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/token",
+                  "type": "string"
+                },
+                {
+                  "key": "clientId",
+                  "value": "{{clientId}}",
+                  "type": "string"
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "https://oauth.pstmn.io/v1/callback",
+                  "type": "string"
+                },
+                {
+                  "key": "scope",
+                  "value": "openid profile email",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenName",
+                  "value": "token-jefe",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "client_authentication",
+                  "value": "send_client_credentials_in_body",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('GET /actuator/health responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Token docente A",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gatewayUrl}}/actuator/health",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "Get New Access Token con docente-a@atenas.local. Primer login: CLAVE_TEMPORAL y cambio obligatorio. Copiar el Access Token y pegarlo en token-docente-a del environment Atenas Local.",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/auth",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/token",
+                  "type": "string"
+                },
+                {
+                  "key": "clientId",
+                  "value": "{{clientId}}",
+                  "type": "string"
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "https://oauth.pstmn.io/v1/callback",
+                  "type": "string"
+                },
+                {
+                  "key": "scope",
+                  "value": "openid profile email",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenName",
+                  "value": "token-docente-a",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "client_authentication",
+                  "value": "send_client_credentials_in_body",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('GET /actuator/health responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Token docente B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gatewayUrl}}/actuator/health",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "Get New Access Token con docente-b@atenas.local. Primer login: CLAVE_TEMPORAL y cambio obligatorio. Copiar el Access Token y pegarlo en token-docente-b del environment Atenas Local.",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/auth",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/token",
+                  "type": "string"
+                },
+                {
+                  "key": "clientId",
+                  "value": "{{clientId}}",
+                  "type": "string"
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "https://oauth.pstmn.io/v1/callback",
+                  "type": "string"
+                },
+                {
+                  "key": "scope",
+                  "value": "openid profile email",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenName",
+                  "value": "token-docente-b",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "client_authentication",
+                  "value": "send_client_credentials_in_body",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('GET /actuator/health responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Token representante",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gatewayUrl}}/actuator/health",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "Get New Access Token con 400001@sistemas.frc.utn.edu.ar. Primer login: CLAVE_TEMPORAL y cambio obligatorio. Copiar el Access Token y pegarlo en token-representante del environment Atenas Local.",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/auth",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/token",
+                  "type": "string"
+                },
+                {
+                  "key": "clientId",
+                  "value": "{{clientId}}",
+                  "type": "string"
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "https://oauth.pstmn.io/v1/callback",
+                  "type": "string"
+                },
+                {
+                  "key": "scope",
+                  "value": "openid profile email",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenName",
+                  "value": "token-representante",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "client_authentication",
+                  "value": "send_client_credentials_in_body",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('GET /actuator/health responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Token integrante",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gatewayUrl}}/actuator/health",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "Get New Access Token con 400002@sistemas.frc.utn.edu.ar. Primer login: CLAVE_TEMPORAL y cambio obligatorio. Copiar el Access Token y pegarlo en token-integrante del environment Atenas Local.",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/auth",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/token",
+                  "type": "string"
+                },
+                {
+                  "key": "clientId",
+                  "value": "{{clientId}}",
+                  "type": "string"
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "https://oauth.pstmn.io/v1/callback",
+                  "type": "string"
+                },
+                {
+                  "key": "scope",
+                  "value": "openid profile email",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenName",
+                  "value": "token-integrante",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "client_authentication",
+                  "value": "send_client_credentials_in_body",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('GET /actuator/health responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Token alumno B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gatewayUrl}}/actuator/health",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "Get New Access Token con 400003@sistemas.frc.utn.edu.ar. Primer login: CLAVE_TEMPORAL y cambio obligatorio. Copiar el Access Token y pegarlo en token-alumno-b del environment Atenas Local.",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/auth",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "{{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/token",
+                  "type": "string"
+                },
+                {
+                  "key": "clientId",
+                  "value": "{{clientId}}",
+                  "type": "string"
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "https://oauth.pstmn.io/v1/callback",
+                  "type": "string"
+                },
+                {
+                  "key": "scope",
+                  "value": "openid profile email",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenName",
+                  "value": "token-alumno-b",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "client_authentication",
+                  "value": "send_client_credentials_in_body",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('GET /actuator/health responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "00 Smoke",
+      "description": "Verificaciones mínimas de infraestructura y seguridad: documentación pública, rechazo sin token y ausencia de ruta interna en el Gateway.",
+      "item": [
+        {
+          "name": "GET api-docs de documentación sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('GET /api/documentacion/v3/api-docs sin token responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/v3/api-docs",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "v3",
+                "api-docs"
+              ]
+            },
+            "description": "Verifica que la documentación de ms-documentacion esté disponible por el Gateway sin token.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "POST entrega sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('POST /api/documentacion/hitos/1/entregas sin token responde 401', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/hitos/1/entregas",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "hitos",
+                "1",
+                "entregas"
+              ]
+            },
+            "description": "Verifica que el Gateway rechace con 401 una operación protegida cuando no se envía token.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "GET equipo interno con token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('GET /internal/equipos/1 por el Gateway responde 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/internal/equipos/1",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "internal",
+                "equipos",
+                "1"
+              ]
+            },
+            "description": "Verifica que el Gateway no exponga rutas internas entre microservicios.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 Estructura y usuarios",
+      "description": "Flujo base de F02/F03: curso, comisiones, comisiones lectivas, docentes con asignación y estudiantes.",
+      "item": [
+        {
+          "name": "C01 Crear curso lectivo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C01 Crear curso lectivo responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C01 devuelve el año', function () {",
+                  "    pm.expect(pm.response.json().anio).to.eql(2026);",
+                  "});",
+                  "pm.test('C01 guarda cursoLectivoId', function () {",
+                  "    pm.environment.set('cursoLectivoId', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/cursos-lectivos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "cursos-lectivos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"anio\": 2026,\n  \"fechaInicio\": \"2026-03-01\",\n  \"fechaFin\": \"2026-12-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C02 Listar cursos lectivos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C02 Listar cursos lectivos responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C02 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/cursos-lectivos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "cursos-lectivos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C03 Crear comisión 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C03 Crear comisión 1 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C03 devuelve Comisión 1', function () {",
+                  "    pm.expect(pm.response.json().nombre).to.eql('Comisión 1');",
+                  "});",
+                  "pm.test('C03 guarda comisionId', function () {",
+                  "    pm.environment.set('comisionId', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Comisión 1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C04 Listar comisiones",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C04 Listar comisiones responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C04 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C05 Habilitar comisión 1 en el curso",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C05 Habilitar comisión 1 en el curso responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C05 guarda comisionLectivaId', function () {",
+                  "    pm.environment.set('comisionLectivaId', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/cursos-lectivos/{{cursoLectivoId}}/comisiones-lectivas",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "cursos-lectivos",
+                "{{cursoLectivoId}}",
+                "comisiones-lectivas"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comisionId\": {{comisionId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C06 Listar comisiones lectivas del curso",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C06 Listar comisiones lectivas del curso responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C06 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/cursos-lectivos/{{cursoLectivoId}}/comisiones-lectivas",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "cursos-lectivos",
+                "{{cursoLectivoId}}",
+                "comisiones-lectivas"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C03 Crear comisión 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C03 Crear comisión 2 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C03 comisión 2 guarda comision2Id', function () {",
+                  "    pm.environment.set('comision2Id', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Comisión 2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C05 Habilitar comisión 2 en el curso",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C05 Habilitar comisión 2 en el curso responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C05 comisión 2 guarda comisionLectiva2Id', function () {",
+                  "    pm.environment.set('comisionLectiva2Id', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/cursos-lectivos/{{cursoLectivoId}}/comisiones-lectivas",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "cursos-lectivos",
+                "{{cursoLectivoId}}",
+                "comisiones-lectivas"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comisionId\": {{comision2Id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C07 Crear docente A",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C07 Crear docente A responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C07 deriva el mail del docente A', function () {",
+                  "    pm.expect(pm.response.json().mail).to.eql('docente-a@atenas.local');",
+                  "});",
+                  "pm.test('C07 guarda docenteId', function () {",
+                  "    pm.environment.set('docenteId', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/docentes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "docentes"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Docente\",\n  \"apellido\": \"A\",\n  \"mail\": \"docente-a@atenas.local\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C07 Crear docente B",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C07 Crear docente B responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C07 docente B guarda docenteBId', function () {",
+                  "    pm.environment.set('docenteBId', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/docentes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "docentes"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Docente\",\n  \"apellido\": \"B\",\n  \"mail\": \"docente-b@atenas.local\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C08 Listar docentes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C08 Listar docentes responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C08 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/docentes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "docentes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C10 Asignar docente A a comisión 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C10 Asignar docente A a comisión 1 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectivaId}}/docentes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "docentes"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"docenteId\": {{docenteId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C10 Asignar docente A a comisión 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C10 Asignar docente A a comisión 2 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectiva2Id}}/docentes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectiva2Id}}",
+                "docentes"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"docenteId\": {{docenteId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C11 Crear estudiante representante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C11 Crear estudiante representante responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C11 deriva el mail del representante', function () {",
+                  "    pm.expect(pm.response.json().mail).to.include('@sistemas.frc.utn.edu.ar');",
+                  "});",
+                  "pm.test('C11 representante guarda estudianteRepresentanteId', function () {",
+                  "    pm.environment.set('estudianteRepresentanteId', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/estudiantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "estudiantes"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"legajo\": \"400001\",\n  \"nombre\": \"Alumno\",\n  \"apellido\": \"Representante\",\n  \"comisionLectivaId\": {{comisionLectivaId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C11 Crear estudiante integrante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C11 Crear estudiante integrante responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C11 integrante guarda estudianteIntegranteId', function () {",
+                  "    pm.environment.set('estudianteIntegranteId', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/estudiantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "estudiantes"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"legajo\": \"400002\",\n  \"nombre\": \"Alumno\",\n  \"apellido\": \"Integrante\",\n  \"comisionLectivaId\": {{comisionLectivaId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C11 Crear estudiante B",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C11 Crear estudiante B responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C11 estudiante B guarda estudianteBId', function () {",
+                  "    pm.environment.set('estudianteBId', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/estudiantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "estudiantes"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"legajo\": \"400003\",\n  \"nombre\": \"Alumno\",\n  \"apellido\": \"B\",\n  \"comisionLectivaId\": {{comisionLectivaId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C12 Listar estudiantes de la comisión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C12 Listar estudiantes de la comisión responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C12 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectivaId}}/estudiantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "estudiantes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Equipos",
+      "description": "Flujo de F04 parte 1: equipo 1, GitHub de los alumnos, ingreso, salida de integrante y aseguramiento por el representante.",
+      "item": [
+        {
+          "name": "C16 Crear equipo 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C16 Crear equipo 1 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C16 crea el equipo ABIERTO', function () {",
+                  "    pm.expect(pm.response.json().estado).to.eql('ABIERTO');",
+                  "});",
+                  "pm.test('C16 guarda equipo1Id', function () {",
+                  "    pm.environment.set('equipo1Id', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectivaId}}/equipos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "equipos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Equipo 1\",\n  \"cupoMinimo\": 1,\n  \"cupoMaximo\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C17 Listar equipos de la comisión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C17 Listar equipos de la comisión responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C17 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectivaId}}/equipos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "equipos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C18 Consultar equipo 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C18 Consultar equipo 1 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C18 devuelve el equipo 1', function () {",
+                  "    pm.expect(pm.response.json().id).to.eql(Number(pm.environment.get('equipo1Id')));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo1Id}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo1Id}}"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C15 Cargar GitHub del representante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C15 Cargar GitHub del representante responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C15 guarda el GitHub en minúsculas', function () {",
+                  "    pm.expect(pm.response.json().usuarioGithub).to.eql(pm.environment.get('githubRepresentante').toLowerCase());",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/mi-perfil/usuario-github",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "mi-perfil",
+                "usuario-github"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioGithub\": \"{{githubRepresentante}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C15 Cargar GitHub del integrante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C15 Cargar GitHub del integrante responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C15 guarda el GitHub del integrante', function () {",
+                  "    pm.expect(pm.response.json().usuarioGithub).to.eql(pm.environment.get('githubIntegrante').toLowerCase());",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/mi-perfil/usuario-github",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "mi-perfil",
+                "usuario-github"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioGithub\": \"{{githubIntegrante}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-integrante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C19 Ingresar representante al equipo 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C19 Ingresar representante al equipo 1 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C19 registra al representante', function () {",
+                  "    pm.expect(pm.response.json().representanteSub).to.be.a('string');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo1Id}}/integrantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo1Id}}",
+                "integrantes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C19 Ingresar integrante al equipo 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C19 Ingresar integrante al equipo 1 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C19 registra dos integrantes', function () {",
+                  "    pm.expect(pm.response.json().cantidadIntegrantes).to.eql(2);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo1Id}}/integrantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo1Id}}",
+                "integrantes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-integrante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C20 Integrante sale del equipo 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C20 Integrante sale del equipo 1 responde 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo1Id}}/integrantes/{{estudianteIntegranteId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo1Id}}",
+                "integrantes",
+                "{{estudianteIntegranteId}}"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-integrante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C21 Representante asegura el equipo 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C21 Representante asegura el equipo 1 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C21 deja el equipo asegurado', function () {",
+                  "    pm.expect(pm.response.json().asegurado).to.eql(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo1Id}}/aseguramiento",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo1Id}}",
+                "aseguramiento"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Calendario y repositorio",
+      "description": "Eventos de la comisión, asistencia, vinculación de repositorio y actividad de GitHub. Se completa al implementar F11, F14 y F15.",
+      "item": [
+        {
+          "name": "S01 Crear evento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S01 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('S01 guarda eventoId', function () {",
+                  "    if (pm.response.code === 201) { pm.environment.set('eventoId', pm.response.json().id); }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"CLASE\",\n  \"fecha\": \"2026-05-10T18:00:00-03:00\",\n  \"descripcion\": \"Clase de prueba\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/comisiones-lectivas/{{comisionLectivaId}}/eventos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "eventos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Crear un evento de calendario. Requiere docente asignado."
+          },
+          "response": []
+        },
+        {
+          "name": "S02 Listar eventos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S02 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S02 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/comisiones-lectivas/{{comisionLectivaId}}/eventos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "eventos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Listar el calendario de la comisión."
+          },
+          "response": []
+        },
+        {
+          "name": "S03 Registrar asistencia individual",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token-representante') || '';",
+                  "if (token) {",
+                  "    const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');",
+                  "    pm.environment.set('estudianteSub', JSON.parse(atob(payload)).sub);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S03 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S03 registra la asistencia del representante', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.estudianteSub).to.eql(pm.environment.get('estudianteSub'));",
+                  "    pm.expect(cuerpo.presente).to.eql(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"presente\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/eventos/{{eventoId}}/asistencias/{{estudianteSub}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "eventos",
+                "{{eventoId}}",
+                "asistencias",
+                "{{estudianteSub}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Registrar asistencia de un alumno. El sub se obtiene del token-representante."
+          },
+          "response": []
+        },
+        {
+          "name": "S04 Registrar asistencia de equipo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S04 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"presente\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/eventos/{{eventoId}}/equipos/{{equipo1Id}}/asistencias",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "eventos",
+                "{{eventoId}}",
+                "equipos",
+                "{{equipo1Id}}",
+                "asistencias"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Registrar asistencia de un equipo."
+          },
+          "response": []
+        },
+        {
+          "name": "S03 Repetir asistencia individual",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token-representante') || '';",
+                  "if (token) {",
+                  "    const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');",
+                  "    pm.environment.set('estudianteSub', JSON.parse(atob(payload)).sub);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S03 repetida responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S03 repetida actualiza el presente a false', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.estudianteSub).to.eql(pm.environment.get('estudianteSub'));",
+                  "    pm.expect(cuerpo.presente).to.eql(false);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"presente\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/eventos/{{eventoId}}/asistencias/{{estudianteSub}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "eventos",
+                "{{eventoId}}",
+                "asistencias",
+                "{{estudianteSub}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Repetir S03: el registro existente se actualiza en vez de duplicarse (RN12)."
+          },
+          "response": []
+        },
+        {
+          "name": "S05 Consultar asistencia del evento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S05 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S05 conserva una sola fila con el último valor', function () {",
+                  "    const filas = pm.response.json().filter(fila => fila.estudianteSub === pm.environment.get('estudianteSub'));",
+                  "    pm.expect(filas).to.have.lengthOf(1);",
+                  "    pm.expect(filas[0].presente).to.eql(false);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/eventos/{{eventoId}}/asistencias",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "eventos",
+                "{{eventoId}}",
+                "asistencias"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Consultar la asistencia registrada para un evento."
+          },
+          "response": []
+        },
+        {
+          "name": "S07 Vincular repositorio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S07 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S07 devuelve el repositorio vinculado', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.equipoId).to.eql(Number(pm.environment.get('equipo1Id')));",
+                  "    pm.expect(cuerpo.propietario).to.eql(pm.environment.get('githubUsuario'));",
+                  "    pm.expect(cuerpo.nombre).to.eql(pm.environment.get('githubRepositorio'));",
+                  "    pm.expect(cuerpo.rama).to.eql(pm.environment.get('githubRama'));",
+                  "    pm.expect(cuerpo.url).to.eql('https://github.com/' + pm.environment.get('githubUsuario') + '/' + pm.environment.get('githubRepositorio'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://github.com/{{githubUsuario}}/{{githubRepositorio}}\",\n  \"rama\": \"{{githubRama}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/equipos/{{equipo1Id}}/repositorio",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "equipos",
+                "{{equipo1Id}}",
+                "repositorio"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Vincular un repositorio público y una rama. Completar githubUsuario, githubRepositorio y githubRama."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 Proceso principal",
+      "description": "Flujo de hito, entrega, apertura, corrección, actividad y dashboard. Se completa al implementar F06, F07, F08, F09, F10, F12 y F13.",
+      "item": [
+        {
+          "name": "D01 Crear hito",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D01 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('D01 guarda hitoId', function () {",
+                  "    if (pm.response.code === 201) { pm.environment.set('hitoId', pm.response.json().id); }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cursoLectivoId\": {{cursoLectivoId}},\n  \"nombre\": \"Sprint 1\",\n  \"tipo\": \"SPRINT\",\n  \"orden\": 1,\n  \"fechaInicio\": \"2026-05-01T00:00:00-03:00\",\n  \"fechaLimite\": \"2026-05-15T23:59:59-03:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/hitos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "hitos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Crear un hito del curso. Requiere que D01 exista en ms-documentacion."
+          },
+          "response": []
+        },
+        {
+          "name": "D02 Listar hitos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D02 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('D02 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/hitos?cursoLectivoId={{cursoLectivoId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "hitos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Listar los hitos del curso."
+          },
+          "response": []
+        },
+        {
+          "name": "D03 Registrar entrega",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D03 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('D03 guarda entregaId', function () {",
+                  "    if (pm.response.code === 201) { pm.environment.set('entregaId', pm.response.json().id); }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enlace\": \"{{driveEnlace}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/hitos/{{hitoId}}/entregas",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "hitos",
+                "{{hitoId}}",
+                "entregas"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Registrar una entrega con un enlace público de Drive. Completar driveEnlace."
+          },
+          "response": []
+        },
+        {
+          "name": "D04 Listar entregas por comisión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D04 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('D04 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas?comisionLectivaId={{comisionLectivaId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Listar entregas de la comisión, incluyendo PENDIENTE calculadas."
+          },
+          "response": []
+        },
+        {
+          "name": "D04 Listar entregas por hito",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D04 filtrado responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas?comisionLectivaId={{comisionLectivaId}}&hitoId={{hitoId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Verificar el filtro opcional por hitoId."
+          },
+          "response": []
+        },
+        {
+          "name": "D06 Abrir entrega",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D06 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('D06 devuelve estado de modificacion', function () {",
+                  "    pm.expect(['SI', 'NO', 'NO_VERIFICADO']).to.include(pm.response.json().modificadoPostEntrega);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas/{{entregaId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas",
+                "{{entregaId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Abrir una entrega y verificar cambios en Drive."
+          },
+          "response": []
+        },
+        {
+          "name": "D07 Corregir entrega",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D07 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('D07 deja la entrega CORREGIDA', function () {",
+                  "    pm.expect(pm.response.json().estado).to.eql('CORREGIDA');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nota\": 8\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas/{{entregaId}}/correccion",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas",
+                "{{entregaId}}",
+                "correccion"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Corregir una entrega ENTREGADA con nota 8."
+          },
+          "response": []
+        },
+        {
+          "name": "S08 Actualizar actividad",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S08 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S08 devuelve un snapshot actualizado por sprint', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.equipoId).to.eql(Number(pm.environment.get('equipo1Id')));",
+                  "    pm.expect(cuerpo.snapshots).to.be.an('array').that.is.not.empty;",
+                  "    cuerpo.snapshots.forEach(snapshot => {",
+                  "        pm.expect(snapshot.estado).to.eql('ACTUALIZADO');",
+                  "        pm.expect(snapshot.commitsTotales).to.be.a('number');",
+                  "        pm.expect(snapshot.commitsSinAtribuir).to.be.a('number');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/equipos/{{equipo1Id}}/actividad/actualizacion",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "equipos",
+                "{{equipo1Id}}",
+                "actividad",
+                "actualizacion"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Actualizar la actividad de GitHub a pedido."
+          },
+          "response": []
+        },
+        {
+          "name": "S09 Dashboard por comisión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S09 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S09 compone equipos con entregas disponibles', function () {",
+                  "    const cuerpos = pm.response.json();",
+                  "    pm.expect(cuerpos).to.be.an('array').that.is.not.empty;",
+                  "    cuerpos.forEach(dashboard => pm.expect(dashboard.entregas.disponible).to.eql(true));",
+                  "    const equipo = cuerpos.find(dashboard => dashboard.equipoId === Number(pm.environment.get('equipo1Id')));",
+                  "    pm.expect(equipo, 'el equipo 1 debe estar en el dashboard').to.exist;",
+                  "    pm.expect(equipo.actividad.disponible).to.eql(true);",
+                  "    pm.expect(equipo.actividad.snapshots).to.be.an('array').that.is.not.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/dashboard/equipos?comisionLectivaId={{comisionLectivaId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "dashboard",
+                "equipos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Consultar el dashboard consolidado de la comisión."
+          },
+          "response": []
+        },
+        {
+          "name": "S10 Dashboard de equipo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S10 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S10 compone asistencia, entregas y actividad del equipo', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.equipoId).to.eql(Number(pm.environment.get('equipo1Id')));",
+                  "    pm.expect(cuerpo.entregas.disponible).to.eql(true);",
+                  "    pm.expect(cuerpo.entregas.hitos).to.be.an('array');",
+                  "    pm.expect(cuerpo.actividad.disponible).to.eql(true);",
+                  "    pm.expect(cuerpo.actividad.snapshots).to.be.an('array').that.is.not.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/dashboard/equipos/{{equipo1Id}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "dashboard",
+                "equipos",
+                "{{equipo1Id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Consultar asistencia, entregas y actividad de un equipo."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 Consultas del alumno",
+      "description": "Consultas de perfil propio. La carga de GitHub se ejecuta en la carpeta 02 como preparación del equipo.",
+      "item": [
+        {
+          "name": "C14 Consultar mi perfil",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C14 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C14 informa el equipo como nulo', function () {",
+                  "    pm.expect(pm.response.json().equipoId).to.be.null;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/mi-perfil",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "mi-perfil"
+              ]
+            },
+            "description": "Consulta el perfil del alumno autenticado. Requiere token de alumno.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "S06 Consultar mi asistencia",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S06 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S06 devuelve una lista de asistencias propias', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/mi-asistencia",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "mi-asistencia"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Consultar la asistencia del alumno autenticado."
+          },
+          "response": []
+        },
+        {
+          "name": "S06 Consultar mi asistencia del representante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S06 del representante responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S06 del representante refleja la última asistencia', function () {",
+                  "    const filas = pm.response.json().filter(fila => fila.eventoId === Number(pm.environment.get('eventoId')));",
+                  "    pm.expect(filas).to.have.lengthOf(1);",
+                  "    pm.expect(filas[0].presente).to.eql(false);",
+                  "    pm.expect(filas[0].comisionLectivaId).to.eql(Number(pm.environment.get('comisionLectivaId')));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/mi-asistencia",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "mi-asistencia"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Verifica que el representante ve su propia asistencia después de S03 repetida."
+          },
+          "response": []
+        },
+        {
+          "name": "D05 Consultar entregas de mi equipo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D05 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('D05 devuelve una lista', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/mi-equipo/entregas",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "mi-equipo",
+                "entregas"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Consultar las entregas del equipo propio, incluyendo pendientes."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "06 Reglas de dominio",
+      "description": "Sucesión del representante, baja lógica, reapertura y nuevo aseguramiento del equipo 1.",
+      "item": [
+        {
+          "name": "C16 Crear equipo 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C16 Crear equipo 2 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C16 equipo 2 guarda equipo2Id', function () {",
+                  "    pm.environment.set('equipo2Id', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectivaId}}/equipos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "equipos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Equipo 2\",\n  \"cupoMinimo\": 2,\n  \"cupoMaximo\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C19 Estudiante B ingresa al equipo 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C19 Estudiante B ingresa al equipo 2 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C19 B queda como representante', function () {",
+                  "    pm.expect(pm.response.json().representanteSub).to.be.a('string');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo2Id}}/integrantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo2Id}}",
+                "integrantes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C19 Integrante ingresa al equipo 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C19 Integrante ingresa al equipo 2 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C19 equipo 2 tiene dos integrantes', function () {",
+                  "    pm.expect(pm.response.json().cantidadIntegrantes).to.eql(2);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo2Id}}/integrantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo2Id}}",
+                "integrantes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-integrante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C20 Representante B sale del equipo 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C20 Representante B sale del equipo 2 responde 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo2Id}}/integrantes/{{estudianteBId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo2Id}}",
+                "integrantes",
+                "{{estudianteBId}}"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C18 Verificar sucesión del representante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C18 Verificar sucesión del representante responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C18 queda un integrante', function () {",
+                  "    pm.expect(pm.response.json().cantidadIntegrantes).to.eql(1);",
+                  "});",
+                  "pm.test('C18 el integrante pasa a representante', function () {",
+                  "    pm.expect(pm.response.json().representanteSub).to.eql(pm.response.json().integrantes[0].sub);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo2Id}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo2Id}}"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C13 Dar de baja al representante del equipo 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C13 Dar de baja al representante del equipo 2 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C13 deja al estudiante inactivo', function () {",
+                  "    pm.expect(pm.response.json().activo).to.eql(false);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/estudiantes/{{estudianteIntegranteId}}/baja",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "estudiantes",
+                "{{estudianteIntegranteId}}",
+                "baja"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C22 Reabrir equipo 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C22 Reabrir equipo 1 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C22 deja el equipo abierto', function () {",
+                  "    pm.expect(pm.response.json().asegurado).to.eql(false);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo1Id}}/reapertura",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo1Id}}",
+                "reapertura"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C21 Representante vuelve a asegurar el equipo 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C21 Representante vuelve a asegurar el equipo 1 responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C21 deja el equipo asegurado', function () {",
+                  "    pm.expect(pm.response.json().asegurado).to.eql(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo1Id}}/aseguramiento",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo1Id}}",
+                "aseguramiento"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C09 Dar de baja al docente B",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C09 Dar de baja al docente B responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('C09 deja al docente inactivo', function () {",
+                  "    pm.expect(pm.response.json().activo).to.eql(false);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/docentes/{{docenteBId}}/baja",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "docentes",
+                "{{docenteBId}}",
+                "baja"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 Negativos",
+      "description": "Casos negativos de ms-catedra y ms-seguimiento: cupos, pertenencia, RN01, RN25 y acceso al dashboard.",
+      "item": [
+        {
+          "name": "C10 Asignar docente B a comisión 2 (preparación)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Preparación: docente B asignado a la comisión 2', function () {",
+                  "    pm.expect([201, 409]).to.include(pm.response.code);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"docenteId\": {{docenteBId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectiva2Id}}/docentes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectiva2Id}}",
+                "docentes"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-jefe}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Preparación para RN01: docente B pertenece a la comisión 2, no a la del equipo 1."
+          },
+          "response": []
+        },
+        {
+          "name": "C16 Cupo inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C16 Cupo inválido responde 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectivaId}}/equipos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "equipos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Equipo inválido\",\n  \"cupoMinimo\": 0,\n  \"cupoMaximo\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C16 Crear equipo 4",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C16 Crear equipo 4 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C16 equipo 4 guarda equipo4Id', function () {",
+                  "    pm.environment.set('equipo4Id', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectivaId}}/equipos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectivaId}}",
+                "equipos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Equipo 4\",\n  \"cupoMinimo\": 2,\n  \"cupoMaximo\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C19 Estudiante B ingresa al equipo 4",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C19 Estudiante B ingresa al equipo 4 responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo4Id}}/integrantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo4Id}}",
+                "integrantes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C21 Asegurar sin condiciones",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C21 Asegurar sin condiciones responde 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo4Id}}/aseguramiento",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo4Id}}",
+                "aseguramiento"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C16 Crear equipo 3 en otra comisión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C16 Crear equipo 3 en otra comisión responde 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('C16 equipo 3 guarda equipo3Id', function () {",
+                  "    pm.environment.set('equipo3Id', pm.response.json().id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/comisiones-lectivas/{{comisionLectiva2Id}}/equipos",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "comisiones-lectivas",
+                "{{comisionLectiva2Id}}",
+                "equipos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Equipo 3\",\n  \"cupoMinimo\": 2,\n  \"cupoMaximo\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C19 Alumno de otra comisión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C19 Alumno de otra comisión responde 403', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo3Id}}/integrantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo3Id}}",
+                "integrantes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C19 Doble pertenencia",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('C19 Doble pertenencia responde 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/catedra/equipos/{{equipo2Id}}/integrantes",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "catedra",
+                "equipos",
+                "{{equipo2Id}}",
+                "integrantes"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "D03 Entrega duplicada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D03 duplicada responde 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enlace\": \"{{driveEnlace}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/hitos/{{hitoId}}/entregas",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "hitos",
+                "{{hitoId}}",
+                "entregas"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Repetir la entrega del mismo equipo y hito."
+          },
+          "response": []
+        },
+        {
+          "name": "D03 Alumno no representante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D03 no representante responde 403', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enlace\": \"{{driveEnlace}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/hitos/{{hitoId}}/entregas",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "hitos",
+                "{{hitoId}}",
+                "entregas"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Intentar entregar con un alumno que no es representante."
+          },
+          "response": []
+        },
+        {
+          "name": "D07 Entrega ya corregida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D07 ya corregida responde 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nota\": 7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas/{{entregaId}}/correccion",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas",
+                "{{entregaId}}",
+                "correccion"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Intentar corregir una entrega ya CORREGIDA."
+          },
+          "response": []
+        },
+        {
+          "name": "D07 Nota 0",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D07 nota 0 responde 422', function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nota\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas/{{entregaId}}/correccion",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas",
+                "{{entregaId}}",
+                "correccion"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Nota fuera de rango por defecto."
+          },
+          "response": []
+        },
+        {
+          "name": "D07 Nota 11",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D07 nota 11 responde 422', function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nota\": 11\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas/{{entregaId}}/correccion",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas",
+                "{{entregaId}}",
+                "correccion"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Nota fuera de rango por exceso."
+          },
+          "response": []
+        },
+        {
+          "name": "S07 Alumno no representante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S07 no representante responde 403', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://github.com/{{githubUsuario}}/{{githubRepositorio}}\",\n  \"rama\": \"{{githubRama}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/equipos/{{equipo1Id}}/repositorio",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "equipos",
+                "{{equipo1Id}}",
+                "repositorio"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Intentar vincular repositorio sin ser representante."
+          },
+          "response": []
+        },
+        {
+          "name": "S07 Rama inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S07 rama inexistente responde 422', function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "pm.test('S07 informa la regla RN-25', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.regla).to.eql('RN-25');",
+                  "    pm.expect(cuerpo.detail).to.include('rama-inexistente');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://github.com/{{githubUsuario}}/{{githubRepositorio}}\",\n  \"rama\": \"rama-inexistente\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/equipos/{{equipo1Id}}/repositorio",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "equipos",
+                "{{equipo1Id}}",
+                "repositorio"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-representante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "El repositorio existe y es público; la rama no. RN-25 devuelve 422."
+          },
+          "response": []
+        },
+        {
+          "name": "S08 Docente de otra comisión no puede actualizar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S08 de otra comisión responde 403', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test('S08 de otra comisión informa RN-01', function () {",
+                  "    pm.expect(pm.response.json().regla).to.eql('RN-01');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/equipos/{{equipo1Id}}/actividad/actualizacion",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "equipos",
+                "{{equipo1Id}}",
+                "actividad",
+                "actualizacion"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-b}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "RN01: docente B pertenece a la comisión 2 y no puede actualizar el equipo 1."
+          },
+          "response": []
+        },
+        {
+          "name": "S09 Alumno no puede ver dashboard",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Dashboard con token de alumno responde 403', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/dashboard/equipos?comisionLectivaId={{comisionLectivaId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "dashboard",
+                "equipos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-alumno-b}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "El Gateway reserva S09/S10 para JEFE_CATEDRA y DOCENTE."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "08 Fallas controladas",
+      "description": "Dependencias caídas o pausadas y comportamiento de `ProblemDetail` con `X-Correlation-Id`. Se completa junto con las integraciones y la tarea nocturna.",
+      "item": [
+        {
+          "name": "D06 Archivo modificado en Drive",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D06 con Drive responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas/{{entregaId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas",
+                "{{entregaId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Preparación manual: editar el archivo de Drive antes de ejecutar. Usar una entrega ENTREGADA, no CORREGIDA."
+          },
+          "response": []
+        },
+        {
+          "name": "S08 Token de GitHub invalido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S08 con token invalido responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S08 deja los snapshots desactualizados conservando datos', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.snapshots).to.be.an('array').that.is.not.empty;",
+                  "    cuerpo.snapshots.forEach(snapshot => {",
+                  "        pm.expect(snapshot.estado).to.eql('DESACTUALIZADO');",
+                  "        pm.expect(snapshot.commitsTotales).to.be.a('number');",
+                  "        pm.expect(snapshot.commitsSinAtribuir).to.be.a('number');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/equipos/{{equipo1Id}}/actividad/actualizacion",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "equipos",
+                "{{equipo1Id}}",
+                "actividad",
+                "actualizacion"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Preparación manual: reiniciar ms-seguimiento con GITHUB_TOKEN inválido."
+          },
+          "response": []
+        },
+        {
+          "name": "S10 Dashboard tras token de GitHub invalido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Dashboard tras token invalido responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Dashboard expone los snapshots desactualizados', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.actividad.disponible).to.eql(true);",
+                  "    pm.expect(cuerpo.actividad.snapshots).to.be.an('array').that.is.not.empty;",
+                  "    cuerpo.actividad.snapshots.forEach(snapshot => pm.expect(snapshot.estado).to.eql('DESACTUALIZADO'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/dashboard/equipos/{{equipo1Id}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "dashboard",
+                "equipos",
+                "{{equipo1Id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "La actividad propia sigue disponible aunque GitHub falló y RN28 degradó el snapshot."
+          },
+          "response": []
+        },
+        {
+          "name": "S09 Dashboard con documentacion pausada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S09 degradado responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S09 marca entregas no disponibles y sin hitos', function () {",
+                  "    const cuerpos = pm.response.json();",
+                  "    pm.expect(cuerpos).to.be.an('array').that.is.not.empty;",
+                  "    cuerpos.forEach(dashboard => {",
+                  "        pm.expect(dashboard.entregas.disponible).to.eql(false);",
+                  "        pm.expect(dashboard.entregas.hitos).to.be.empty;",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/dashboard/equipos?comisionLectivaId={{comisionLectivaId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "dashboard",
+                "equipos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Preparación manual: docker compose pause ms-documentacion antes de ejecutar."
+          },
+          "response": []
+        },
+        {
+          "name": "S10 Dashboard de equipo con documentacion pausada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S10 degradado responde 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('S10 marca entregas no disponibles y sin hitos', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.entregas.disponible).to.eql(false);",
+                  "    pm.expect(cuerpo.entregas.hitos).to.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/dashboard/equipos/{{equipo1Id}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "dashboard",
+                "equipos",
+                "{{equipo1Id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Preparación manual: docker compose pause ms-documentacion antes de ejecutar."
+          },
+          "response": []
+        },
+        {
+          "name": "D04 con ms-catedra pausado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('D04 con catedra caida responde 503', function () {",
+                  "    pm.response.to.have.status(503);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/documentacion/entregas?comisionLectivaId={{comisionLectivaId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "documentacion",
+                "entregas"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Preparación manual: docker compose pause ms-catedra antes de ejecutar."
+          },
+          "response": []
+        },
+        {
+          "name": "S08 Con I01 caida no degrada snapshots para docente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('S08 con I01 caída responde 503', function () {",
+                  "    pm.response.to.have.status(503);",
+                  "});",
+                  "pm.test('S08 con I01 caída devuelve ProblemDetail', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.status).to.eql(503);",
+                  "    pm.expect(cuerpo.detail).to.be.a('string').and.not.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/equipos/{{equipo1Id}}/actividad/actualizacion",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "equipos",
+                "{{equipo1Id}}",
+                "actividad",
+                "actualizacion"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Preparación manual: docker compose pause ms-catedra. Un docente no puede degradar sin verificar RN01."
+          },
+          "response": []
+        },
+        {
+          "name": "S09 Dashboard con ms-catedra pausado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Dashboard con ms-catedra pausado responde 503', function () {",
+                  "    pm.response.to.have.status(503);",
+                  "});",
+                  "pm.test('Dashboard sin catedra devuelve ProblemDetail', function () {",
+                  "    const cuerpo = pm.response.json();",
+                  "    pm.expect(cuerpo.status).to.eql(503);",
+                  "    pm.expect(cuerpo.title).to.eql('Servicio no disponible');",
+                  "    pm.expect(cuerpo.correlationId).to.be.a('string').and.not.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Correlation-Id",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gatewayUrl}}/api/seguimiento/dashboard/equipos?comisionLectivaId={{comisionLectivaId}}",
+              "host": [
+                "{{gatewayUrl}}"
+              ],
+              "path": [
+                "api",
+                "seguimiento",
+                "dashboard",
+                "equipos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token-docente-a}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Preparación manual: docker compose pause ms-catedra antes de ejecutar."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

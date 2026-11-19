@@ -1,0 +1,12 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/realms/atenas/protocol/openid-connect/certs
+
+atenas:
+  rutas:
+    catedra: http://localhost:8082
+    documentacion: http://localhost:8083
+    seguimiento: http://localhost:8084

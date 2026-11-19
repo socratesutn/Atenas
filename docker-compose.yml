@@ -1,0 +1,172 @@
+name: atenas
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: atenas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      CATEDRA_DB_PASSWORD: ${CATEDRA_DB_PASSWORD}
+      DOCUMENTACION_DB_PASSWORD: ${DOCUMENTACION_DB_PASSWORD}
+      SEGUIMIENTO_DB_PASSWORD: ${SEGUIMIENTO_DB_PASSWORD}
+      KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+    healthcheck:
+      # Se usa TCP para no confundir el servidor temporal que PostgreSQL levanta
+      # durante la inicialización con la instancia definitiva.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d atenas"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    networks:
+      - atenas-net
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    # El entrypoint prepara la copia del realm con los secretos del .env antes
+    # de delegar en el arranque normal de Keycloak.
+    entrypoint: ["/bin/bash", "/opt/keycloak/entrypoint.sh"]
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/atenas
+      KC_DB_USERNAME: keycloak_user
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KC_DB_SCHEMA: keycloak
+      KC_HOSTNAME: http://localhost:8081
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HEALTH_ENABLED: "true"
+      KC_HTTP_MANAGEMENT_PORT: "9000"
+      # Variables usadas por el entrypoint para completar keycloak/realm.json.
+      KC_CATEDRA_ADMIN_SECRET: ${KC_CATEDRA_ADMIN_SECRET}
+      KC_SEGUIMIENTO_JOB_SECRET: ${KC_SEGUIMIENTO_JOB_SECRET}
+      JEFE_PASSWORD_INICIAL: ${JEFE_PASSWORD_INICIAL}
+    volumes:
+      - ./keycloak/realm.json:/opt/keycloak/realm-template.json:ro
+      - ./keycloak/entrypoint.sh:/opt/keycloak/entrypoint.sh:ro
+    ports:
+      - "8081:8080"
+    healthcheck:
+      # La imagen no trae curl/wget: se consulta /health/ready por TCP con Bash.
+      test:
+        - CMD-SHELL
+        - >-
+          bash -c "{ printf 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&0; grep -q 'HTTP/1.1 200'; } 0<>/dev/tcp/localhost/9000"
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - atenas-net
+    restart: unless-stopped
+
+  ms-catedra:
+    build:
+      context: ./ms-catedra
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      CATEDRA_DB_PASSWORD: ${CATEDRA_DB_PASSWORD}
+      KC_CATEDRA_ADMIN_SECRET: ${KC_CATEDRA_ADMIN_SECRET}
+      CLAVE_TEMPORAL: ${CLAVE_TEMPORAL}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - atenas-net
+    restart: unless-stopped
+
+  ms-documentacion:
+    build:
+      context: ./ms-documentacion
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DOCUMENTACION_DB_PASSWORD: ${DOCUMENTACION_DB_PASSWORD}
+      DRIVE_API_KEY: ${DRIVE_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - atenas-net
+    restart: unless-stopped
+
+  ms-seguimiento:
+    build:
+      context: ./ms-seguimiento
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SEGUIMIENTO_DB_PASSWORD: ${SEGUIMIENTO_DB_PASSWORD}
+      KC_SEGUIMIENTO_JOB_SECRET: ${KC_SEGUIMIENTO_JOB_SECRET}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - atenas-net
+    restart: unless-stopped
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      ms-catedra:
+        condition: service_healthy
+      ms-documentacion:
+        condition: service_healthy
+      ms-seguimiento:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - atenas-net
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  atenas-net:
+    driver: bridge

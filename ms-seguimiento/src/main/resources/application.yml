@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: ms-seguimiento
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: seguimiento
+        jdbc:
+          time_zone: UTC
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/atenas
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  api-docs:
+    path: /api/seguimiento/v3/api-docs
+  swagger-ui:
+    path: /api/seguimiento/swagger-ui.html
+  paths-to-match: /api/**
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{correlationId}] %logger{36} - %msg%n"
+
+atenas:
+  zona-horaria: America/Argentina/Cordoba
+  http:
+    timeout-conexion: 2s
+    timeout-lectura: 5s
+  github:
+    url-base: https://api.github.com
+    version-api: "2022-11-28"
+    # Token de servicio de GitHub (5000 pedidos/hora). Vacío = sin autenticar.
+    token: ${GITHUB_TOKEN:}
+  actividad:
+    # Fracción del promedio de commits por integrante bajo la cual se marca "baja contribución" (1/2).
+    umbral-baja-contribucion: 0.5
+    # Tarea nocturna: todos los días a las 02:00, interpretado por @Scheduled en zona Argentina.
+    cron: "0 0 2 * * *"

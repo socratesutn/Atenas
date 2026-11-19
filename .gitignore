@@ -1,0 +1,18 @@
+# Maven
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Visual Studio Code
+.vscode/
+
+# Variables de entorno (nunca versionar secretos)
+.env
+
+# Logs
+*.log
+
+# Ayuda generada por Maven
+HELP.md

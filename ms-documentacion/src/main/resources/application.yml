@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: ms-documentacion
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: documentacion
+        jdbc:
+          time_zone: UTC
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/atenas
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  api-docs:
+    path: /api/documentacion/v3/api-docs
+  swagger-ui:
+    path: /api/documentacion/swagger-ui.html
+  paths-to-match: /api/**
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{correlationId}] %logger{36} - %msg%n"
+
+atenas:
+  zona-horaria: America/Argentina/Cordoba
+  http:
+    timeout-conexion: 2s
+    timeout-lectura: 5s
+  drive:
+    url-base: https://www.googleapis.com/drive/v3
+    api-key: ${DRIVE_API_KEY:}
